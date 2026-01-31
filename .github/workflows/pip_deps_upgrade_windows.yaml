@@ -1,0 +1,62 @@
+#
+# Manual workflow to update the pip-dependencies for windows and
+# create a pull request to merge them to master.
+#
+
+name: Pip Dependencies Upgrade on Windows
+
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_message:
+        description: 'Message of the commit'
+        default: 'feature: Updated pip-dependencies for Windows'
+        required: true
+        type: string
+      committer:
+        description: 'The author of the commit'
+        default: 'Clemens Rabe <clemens.rabe@users.noreply.github.com>'
+        required: true
+        type: string
+
+jobs:
+  pipdepsupgrade:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      # Note: Keep python version in sync with pip-deps!
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - name: Install dependencies
+        uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: install -y make
+      - name: Refresh Environment
+        shell: cmd
+        run: |
+          refreshenv
+      - name: Pip Deps Upgrade
+        run: |
+          C:\ProgramData\chocolatey\bin\make pip-deps-upgrade
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "${{ inputs.commit_message }}"
+          committer: "${{ inputs.committer }}"
+          branch: "feature/update-windows-pip-deps-${{ matrix.os }}"
+          title: "Update Windows Pip-Dependencies (${{ matrix.os }})"
+          assignees: "seeraven"
+          reviewers: "seeraven"
