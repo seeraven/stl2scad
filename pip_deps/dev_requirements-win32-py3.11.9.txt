@@ -27,6 +27,8 @@ colorama==0.4.6
     #   pylint
     #   pytest
     #   sphinx
+coloredlogs==15.0.1
+    # via stl2scad (pyproject.toml)
 coverage[toml]==7.13.2
     # via
     #   pytest-cov
@@ -66,6 +68,8 @@ flake8-isort==7.0.0
     # via stl2scad (pyproject.toml)
 flake8-pyproject==1.2.4
     # via stl2scad (pyproject.toml)
+humanfriendly==10.0
+    # via coloredlogs
 idna==3.11
     # via requests
 imagesize==1.4.1
@@ -156,6 +160,8 @@ pyinstaller-hooks-contrib==2026.0
     # via pyinstaller
 pylint==4.0.4
     # via stl2scad (pyproject.toml)
+pyreadline3==3.5.4
+    # via humanfriendly
 pytest==9.0.2
     # via
     #   pytest-cov

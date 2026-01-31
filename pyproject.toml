@@ -19,6 +19,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
+    "coloredlogs",
     "numpy-stl",
 ]
 
@@ -93,12 +94,12 @@ min-similarity-lines = 20
 [tool.mypy]
 show_error_codes = true
 
-# [[tool.mypy.overrides]]
-# module = [
-#     "coloredlogs.*",
-#     "pytimeparse.*",
-# ]
-# ignore_missing_imports = true
+[[tool.mypy.overrides]]
+module = [
+    "coloredlogs.*",
+    "pytimeparse.*",
+]
+ignore_missing_imports = true
 
 
 [tool.pytest.ini_options]
