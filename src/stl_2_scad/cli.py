@@ -21,6 +21,9 @@ import sys
 
 import coloredlogs
 
+import stl_2_scad.cli_command_dims
+import stl_2_scad.cli_command_import
+
 # -----------------------------------------------------------------------------
 # Module Variables
 # -----------------------------------------------------------------------------
@@ -49,6 +52,11 @@ def get_parser() -> argparse.ArgumentParser:
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         default=default_loglevel,
     )
+
+    subparsers = parser.add_subparsers()
+    stl_2_scad.cli_command_dims.add_subcommand(subparsers)
+    stl_2_scad.cli_command_import.add_subcommand(subparsers)
+
     return parser
 
 
@@ -64,6 +72,10 @@ def main_cli() -> int:
         print(f"stl2scad v{STL2SCAD_VERSION}")
         return 0
 
+    if not hasattr(args, "func"):
+        parser.error("Please specify a subcommand.")
+        return 1
+
     # Setup logging
     log_level_styles = {
         "debug": {"color": "cyan"},
@@ -78,9 +90,4 @@ def main_cli() -> int:
     logger.debug("Python executable: %s", sys.executable)
     logger.debug("Called as %s", sys.argv)
 
-    logger.info("Info log")
-    logger.warning("Warning log")
-    logger.error("Error log")
-    logger.critical("Critical log")
-
-    return 0
+    return args.func(args)
