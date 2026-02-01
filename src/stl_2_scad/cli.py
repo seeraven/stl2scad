@@ -22,6 +22,7 @@ import sys
 import coloredlogs
 
 import stl_2_scad.cli_command_dims
+import stl_2_scad.cli_command_embed
 import stl_2_scad.cli_command_import
 
 # -----------------------------------------------------------------------------
@@ -56,6 +57,7 @@ def get_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers()
     stl_2_scad.cli_command_dims.add_subcommand(subparsers)
     stl_2_scad.cli_command_import.add_subcommand(subparsers)
+    stl_2_scad.cli_command_embed.add_subcommand(subparsers)
 
     return parser
 
