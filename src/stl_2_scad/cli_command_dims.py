@@ -16,6 +16,7 @@ Copyright:
 # -----------------------------------------------------------------------------
 import argparse
 import logging
+from typing import Any
 
 import stl
 
@@ -35,7 +36,7 @@ Print the dimensions of a STL object.
 # -----------------------------------------------------------------------------
 # Argument Parser
 # -----------------------------------------------------------------------------
-def add_subcommand(subparsers: any) -> None:
+def add_subcommand(subparsers: Any) -> None:
     """Add the subcommand 'dims'."""
     parser = subparsers.add_parser(
         "dims",

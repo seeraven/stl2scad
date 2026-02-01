@@ -3,7 +3,7 @@
 This repository hosts a simple tool to work with STL files in OpenSCAD. It
 allows you to
   - get the dimensions of an STL object
-  - create the OpenSCAD code to center the STL object
+  - create an OpenSCAD import statement with anchor support
 
 ## Installation on Linux
 
@@ -28,6 +28,12 @@ The `stl2scad` command provides the following options:
 
   - `-h`, `--help` to show the command help.
   - `-v`, `--version` to show the version of `stl2scad`.
+
+The following subcommands are provided:
+
+  - `dims <stlfile>` to print the bounding box of the STL object
+  - `import <stlfile>` to generate the OpenSCAD code to import the
+    STL object and position it using the provided `anchor` argument.
 
 ## Development
 

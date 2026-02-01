@@ -17,6 +17,7 @@ Copyright:
 import argparse
 import logging
 from pathlib import Path
+from typing import Any
 
 import stl
 
@@ -40,7 +41,7 @@ center in bounding box units.
 # -----------------------------------------------------------------------------
 # Argument Parser
 # -----------------------------------------------------------------------------
-def add_subcommand(subparsers: any) -> None:
+def add_subcommand(subparsers: Any) -> None:
     """Add the subcommand 'import'."""
     parser = subparsers.add_parser(
         "import",

@@ -14,6 +14,9 @@ Copyright:
 # -----------------------------------------------------------------------------
 # Module Import
 # -----------------------------------------------------------------------------
+import functools
+from typing import Any
+
 import stl
 
 
@@ -22,6 +25,10 @@ import stl
 # -----------------------------------------------------------------------------
 def get_stl_bounding_box(mesh: stl.mesh.Mesh):
     """Get the bounding box of the STL mesh."""
-    min_point = [min(mesh.points, key=lambda p: p[idx])[idx] for idx in range(3)]
-    max_point = [max(mesh.points, key=lambda p: p[idx])[idx] for idx in range(3)]
+
+    def get_value(p: Any, i: int) -> Any:
+        return p[i]
+
+    min_point = [min(mesh.points, key=functools.partial(get_value, i=idx))[idx] for idx in range(3)]
+    max_point = [max(mesh.points, key=functools.partial(get_value, i=idx))[idx] for idx in range(3)]
     return min_point + max_point
