@@ -29,7 +29,13 @@ DESCRIPTION = """
 stl2scad dims
 =============
 
-Print the dimensions of a STL object.
+Print the dimensions of an STL object along each axis.
+
+Example:
+    $ stl2scad dims test/data/example_cube.stl
+    X: -3.0 - 7.0
+    Y: -7.0 - 13.0
+    Z: -13.0 - 17.0
 """
 
 

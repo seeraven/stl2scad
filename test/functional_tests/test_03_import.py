@@ -22,7 +22,7 @@ def test_import(stl2scad_ifc: Stl2scadIfc, test_data_dir: Path):
                     anchor.z * 15.0];
 
     translate(-center - displacement)
-    import("{str(test_data_dir)}/example_cube.stl");
+    import("{str(test_data_dir / "example_cube.stl")}");
 }}
 """
     assert expected_stdout in result.stdout

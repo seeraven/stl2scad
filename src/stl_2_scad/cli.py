@@ -24,6 +24,7 @@ import coloredlogs
 import stl_2_scad.cli_command_dims
 import stl_2_scad.cli_command_embed
 import stl_2_scad.cli_command_import
+from stl_2_scad.settings import STL2SCAD_LOGFORMAT, STL2SCAD_VERSION
 
 # -----------------------------------------------------------------------------
 # Module Variables
@@ -34,8 +35,6 @@ stl2scad
 
 Tool for using STL files with OpenSCAD.
 """
-STL2SCAD_VERSION = "1.0.0"
-STL2SCAD_LOGFORMAT = os.getenv("STL2SCAD_LOGFORMAT", "%(asctime)s %(message)s")
 
 
 # -----------------------------------------------------------------------------
