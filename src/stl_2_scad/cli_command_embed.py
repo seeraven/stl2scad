@@ -21,6 +21,7 @@ from typing import Any
 
 import stl
 
+from stl_2_scad.settings import STL2SCAD_VERSION
 from stl_2_scad.stl_helpers import get_stl_bounding_box
 
 # -----------------------------------------------------------------------------
@@ -30,7 +31,21 @@ DESCRIPTION = """
 stl2scad embed
 ==============
 
-Generate an OpenSCAD module that embeds the given STL object.
+Generate an OpenSCAD module that embeds the given STL object as a polyhedron.
+This command creates two modules: A module to generate the STL object called
+`polyhedron_<object>` and a module to place the STL object with support to
+specify an anchor called `<object>`.
+
+The name of the object is the STL filename without the suffix, but it can be
+overwritten using the `--name` option.
+
+The OpenSCAD code is printed on stdout per default, unless the `--output`
+option is used to write it into a file instead.
+
+Example:
+    $ stl2scad embed --name MyCube --output mycube.scad test/data/example_cube.stl
+    Generates the file mycube.scad that contains the OpenSCAD modules
+    `polyhedron_MyCube()` and `MyCube()`.
 """
 
 
@@ -44,6 +59,25 @@ def add_subcommand(subparsers: Any) -> None:
         help="Generate an OpenSCAD module that embeds the given STL object.",
         description=DESCRIPTION,
         formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument(
+        "-r",
+        "--reverse-faces",
+        help="If given, specify the face indices in reverse order.",
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
+        "-n",
+        "--name",
+        help="Name of the object used in the OpenSCAD code. Default is the STL filename without the suffix.",
+        default=None,
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="Write the generated OpenSCAD code into the specified file instead of printing it on stdout.",
+        default=None,
     )
     parser.add_argument("stl", help="STL file.")
     parser.set_defaults(func=stl2scad_embed)
@@ -64,6 +98,8 @@ def stl2scad_embed(args) -> int:
         logger.critical("File %s not found.", args.stl)
         return 1
 
+    object_name = args.name if args.name is not None else Path(args.stl).stem
+
     bbox = get_stl_bounding_box(mesh)
     half_dims = [float(bbox[3] - bbox[0]) / 2, float(bbox[4] - bbox[1]) / 2, float(bbox[5] - bbox[2]) / 2]
     center = [
@@ -79,31 +115,52 @@ def stl2scad_embed(args) -> int:
         vertices.append([float(mesh.v0[i][0]), float(mesh.v0[i][1]), float(mesh.v0[i][2])])
         vertices.append([float(mesh.v1[i][0]), float(mesh.v1[i][1]), float(mesh.v1[i][2])])
         vertices.append([float(mesh.v2[i][0]), float(mesh.v2[i][1]), float(mesh.v2[i][2])])
-        faces.append([i * 3 + 2, i * 3 + 1, i * 3])
+        if args.reverse_faces:
+            faces.append([i * 3, i * 3 + 1, i * 3 + 2])
+        else:
+            faces.append([i * 3 + 2, i * 3 + 1, i * 3])
 
-    print(f"""
-/*
- * Embedded STL file {Path(args.stl).name}.
+    header = f"""/*
+ * Generated code by stl2scad v{STL2SCAD_VERSION} (https://github.com/seeraven/stl2scad)
  */
-module polyhedron_{Path(args.stl).stem}(convexity = 1) {{
+"""
+
+    module_polyhedron = f"""
+/*
+ * Embedded STL object {object_name} from file {Path(args.stl).name}.
+ */
+module polyhedron_{object_name}(convexity = 1) {{
     vertices = {vertices};
     faces = {faces};
     polyhedron(points = vertices, faces = faces, convexity = convexity);
 }}
-""")
+"""
 
-    print(f"""
+    module_object = f"""
 /*
- * Import the file {Path(args.stl).name}.
+ * Place the embedded STL object {object_name} into the scene taking the
+ * given anchor into account.
  */
-module {Path(args.stl).stem}(anchor = [0, 0, 0]) {{
+module {object_name}(anchor = [0, 0, 0]) {{
     center = {center};
     displacement = [anchor.x * {half_dims[0]},
                     anchor.y * {half_dims[1]},
                     anchor.z * {half_dims[2]}];
 
     translate(-center - displacement)
-    polyhedron_{Path(args.stl).stem}();
+    polyhedron_{object_name}();
 }}
-""")
+"""
+
+    if args.output is None:
+        print(header)
+        print(module_polyhedron)
+        print(module_object)
+    else:
+        logger.info("Writing output to file %s.", args.output)
+        with open(args.output, "w", encoding="utf-8") as file_handle:
+            file_handle.write(header)
+            file_handle.write(module_polyhedron)
+            file_handle.write(module_object)
+
     return 0

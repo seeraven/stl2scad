@@ -35,6 +35,21 @@ is specified the same way BOSL2 allows to specify an anchor, so all BOSL2
 constants like TOP, FORDWARD, etc. can be used. Like BOSL2, the anchor
 is internally a vector like [0, 0, 1] specifying the translation from the
 center in bounding box units.
+
+Example:
+    $ stl2scad import test/data/example_cube.stl
+    /*
+     * Import the file example_cube.stl.
+     */
+    module example_cube(anchor = [0, 0, 0]) {
+        center = [2.0, 3.0, 2.0];
+        displacement = [anchor.x * 5.0,
+                        anchor.y * 10.0,
+                        anchor.z * 15.0];
+
+        translate(-center - displacement)
+        import("test/data/example_cube.stl");
+    }
 """
 
 

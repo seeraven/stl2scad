@@ -4,6 +4,7 @@ This repository hosts a simple tool to work with STL files in OpenSCAD. It
 allows you to
   - get the dimensions of an STL object
   - create an OpenSCAD import statement with anchor support
+  - convert an STL object into OpenSCAD code
 
 ## Installation on Linux
 
@@ -34,6 +35,8 @@ The following subcommands are provided:
   - `dims <stlfile>` to print the bounding box of the STL object
   - `import <stlfile>` to generate the OpenSCAD code to import the
     STL object and position it using the provided `anchor` argument.
+  - `embed <stlfile>` to generate the OpenSCAD code to embed the
+    STL object and position it using the provided `anchor` argument.
 
 ## Development
 
@@ -60,9 +63,9 @@ dedicated suffixes on the targets to specify the environment to use:
   - `<target>.windows` specifies to use a vagrant machine running Windows
   - `<target>.all` specifies to run the target on all variants.
 
-For example, if you want to execute the unit tests on Ubuntu 22.04, you can call
+For example, if you want to execute the tests on Ubuntu 22.04, you can call
 
-    make unittests.ubuntu22.04
+    make tests.ubuntu22.04
 
 ## Notes on Releases
 
@@ -78,11 +81,10 @@ is pushed to the repository. This changes the release process a little bit:
     is finished, it is found as a draft on the releases page.
   - Now edit the release draft, insert the changes from the `CHANGELOG.md` file.
     Then the release can be saved as a regular release.
-  - Now prepare the next version. Edit the files `Makefile`, `pyproject.toml`,
-    `src/git_cache/git_cache_command.py` and `doc/source/installation.rst` and
-    replace the version number:
+  - Now prepare the next version. Edit the files `Makefile`, `pyproject.toml` and
+    `src/stl_2_scad/settings.py` and replace the version number:
 
-        sed -i 's/1.0.30/1.0.31/g' Makefile pyproject.toml src/git_cache/git_cache_command.py doc/source/installation.rst
+        sed -i 's/1.0.0/1.0.1/g' Makefile pyproject.toml src/stl_2_scad/settings.py
 
 [pyInstaller]: https://www.pyinstaller.org/
 [make4py]: https://github.com/seeraven/make4py
