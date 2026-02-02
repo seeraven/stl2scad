@@ -13,7 +13,7 @@
 #  SETTINGS
 # ----------------------------------------------------------------------------
 APP_NAME             := stl2scad
-APP_VERSION          := 1.0.0
+APP_VERSION          := 1.0.1
 
 ALL_TARGET           := check-style.venv
 SCRIPT               := src/stl2scad

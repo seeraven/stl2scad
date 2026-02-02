@@ -8,7 +8,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = "stl2scad"
-version = "1.0.0"
+version = "1.0.1"
 authors = [{name = "Clemens Rabe", email = "clemens.rabe@clemensrabe.de"}]
 description = "Tool for using STL files with OpenSCAD."
 readme = "README.md"

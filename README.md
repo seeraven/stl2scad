@@ -12,8 +12,8 @@ stl2scad is distributed as a single executable packaged using [pyInstaller].
 So all you have to do is to download the latest executable and copy it to a
 location of your choice, for example `~/bin`:
 
-    wget https://github.com/seeraven/stl2scad/releases/download/v1.0.0/stl2scad_v1.0.0_Ubuntu22.04_x86_64
-    mv stl2scad_v1.0.0_Ubuntu22.04_x86_64 ~/bin/stl2scad
+    wget https://github.com/seeraven/stl2scad/releases/download/v1.0.1/stl2scad_v1.0.1_Ubuntu22.04_x86_64
+    mv stl2scad_v1.0.1_Ubuntu22.04_x86_64 ~/bin/stl2scad
     chmod +x ~/bin/stl2scad
 
 ## Installation on Windows
@@ -84,7 +84,7 @@ is pushed to the repository. This changes the release process a little bit:
   - Now prepare the next version. Edit the files `Makefile`, `pyproject.toml` and
     `src/stl_2_scad/settings.py` and replace the version number:
 
-        sed -i 's/1.0.0/1.0.1/g' Makefile pyproject.toml src/stl_2_scad/settings.py
+        sed -i 's/1.0.1/1.0.2/g' Makefile pyproject.toml src/stl_2_scad/settings.py
 
 [pyInstaller]: https://www.pyinstaller.org/
 [make4py]: https://github.com/seeraven/make4py

@@ -19,5 +19,5 @@ import os
 # -----------------------------------------------------------------------------
 # Settings
 # -----------------------------------------------------------------------------
-STL2SCAD_VERSION = "1.0.0"
+STL2SCAD_VERSION = "1.0.1"
 STL2SCAD_LOGFORMAT = os.getenv("STL2SCAD_LOGFORMAT", "%(asctime)s %(message)s")
